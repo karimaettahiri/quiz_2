@@ -1,0 +1,16 @@
+<div class="ml-3 mt-3 mb-3 mr-3">
+
+ <div class="card-body">
+<h1 class="card-title"><%= @idea.title%> </h1>
+
+<p class="card-text"><%= @idea.description%></p>
+ </div>
+<small>Posted <%= time_ago_in_words(@idea.created_at) %> ago</small>
+</div>
+<button type="button" class="btn btn-outline-primary">
+<%= link_to("Edit", edit_idea_path(@idea.id)) %>
+</button>
+
+<button type="button" class="btn btn-outline-primary">
+    <%= link_to("Delete", idea_path(@idea.id) ,method: :delete, data:{confirm:"Are you sure?"}) %>
+</button>
