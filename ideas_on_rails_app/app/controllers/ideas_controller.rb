@@ -1,11 +1,14 @@
 class IdeasController < ApplicationController
     before_action :find_idea, only: [:edit, :update, :show, :destroy]
+    before_action :authenticate_user! 
+    before_action :authorize_user!, only: [:update, :destroy]
 
     def new
         @idea = Idea.new
     end
     def create
         @idea = Idea.new idea_params
+        @idea.user = current_user
         if @idea.save
           redirect_to ideas_path(@idea)
         else
@@ -14,11 +17,13 @@ class IdeasController < ApplicationController
     end
     def index
         @ideas = Idea.all
+        
     end
     def show
 
-        #@comments = @post.comments
-        #@comment = Comment.new
+        @reviews = @idea.reviews
+        @review = Review.new
+       
 
     end
 
@@ -40,6 +45,7 @@ class IdeasController < ApplicationController
 
 
     private
+    
 
     def find_idea
         @idea =  Idea.find(params[:id])
@@ -47,5 +53,8 @@ class IdeasController < ApplicationController
 
     def idea_params
       params.require(:idea).permit(:title, :description)
+    end
+    def authorize_user!
+        redirect_to root_path, alert: "Not Authorized!" unless can?(:crud, @idea)
     end
 end
