@@ -1,0 +1,24 @@
+<div class="container">
+<div class="row">
+
+<% @ideas.each do |idea|%>
+<div class="card col-xs-11 col-sm-11 col-md-5 col-lg-3 col-xlg-3 m-4">
+    <div class="card-body">
+    <h2><%= link_to(idea.title, idea_path(idea.id))%></h2>
+    <p><%= idea.description%></p>
+    </div>
+
+    <% like = idea.likes.find_by(user: current_user) %>
+            <% if like.present? %>
+            <%= link_to "Liked", like_path(like),class:"btn btn-primary btn-sm ", method: :delete %>
+            <% else %>
+            <%= link_to "Like", idea_likes_path(idea),class:"btn btn-primary btn-sm ", method: :post %>
+            <% end%>
+            </small>
+            <small>Likes: <%= idea.likes.count %> </small>
+</div>
+
+<%end%>
+
+</div>
+</div>

@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="row ">
+    <div class="col-xs-1">
+    </div>
+ <div class="card col-xs-11 m-4">
+ 
+<h1 ><%= @idea.title%> </h1>
+
+<p ><%= @idea.description%></p>
+ 
+<small>Posted <%= time_ago_in_words(@idea.created_at) %> ago</small>
+<br>
+<small>
+    Created by: <%= @idea.user.first_name %>
+</small>
+</div>
+</div>
+
+
+<button type="button" class="btn btn-outline-primary">
+<%= link_to("Edit", edit_idea_path(@idea.id)) %>
+</button>
+
+<button type="button" class="btn btn-outline-primary">
+    <%= link_to("Delete", idea_path(@idea.id) ,method: :delete, data:{confirm:"Are you sure?"}) %>
+</button>
+<br>
+
+
+  <div class="row ">
+    <div class="col-xs-1">
+    </div>
+ <div class="card col-xs-11 m-4">
+<ul>
+<% if @review.errors.any? %>
+    <% @review.errors.full_messages.each do |msg|%>
+    <li><%= msg %></li>
+    <% end %>
+<% end %>
+</ul>
+<%= form_with(model: [@idea, @review]) do |form|%>
+<div>
+    <%= form.label :Review%>
+    <br>
+    <%= form.text_area :body%>
+</div>
+<%= form.submit %>
+<% end %>
+<ul>
+
+    <% @reviews.each do |review| %>
+        <li>
+            <%= review.body %>
+            <br>
+           
+            <small>
+            
+               Reviewed  <%= time_ago_in_words(review.created_at) %> ago
+                <br>
+                    Created by: <%= review.user.first_name %>
+              <%= link_to("Delete", idea_review_path(@idea.id, review) ,class:"btn btn-light ",method: :delete, data:{confirm:"Are you sure?"}) %>
+              <hr>
+              
+            </small>
+        </li>
+        
+    <% end %>
+</ul>
+</div> 
+   </div> 
+
+
+</div>
+
+
